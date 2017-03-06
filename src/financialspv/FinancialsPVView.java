@@ -13,6 +13,7 @@ package financialspv;
 import business.Annuity;
 import business.Financial;
 import business.Loan;
+import business.PresentValue;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -132,6 +133,7 @@ public class FinancialsPVView extends FrameView {
         btn_calculate = new javax.swing.JButton();
         btn_schedule = new javax.swing.JButton();
         btn_clear = new javax.swing.JButton();
+        rdo_presentValue = new javax.swing.JRadioButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -224,6 +226,15 @@ public class FinancialsPVView extends FrameView {
             }
         });
 
+        functionGroup.add(rdo_presentValue);
+        rdo_presentValue.setText(resourceMap.getString("rdo_presentValue.text")); // NOI18N
+        rdo_presentValue.setName("rdo_presentValue"); // NOI18N
+        rdo_presentValue.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rdo_presentValueItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -241,27 +252,29 @@ public class FinancialsPVView extends FrameView {
                             .addComponent(lbl_annualRate, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_term, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_financialOperation))
-                        .addGap(18, 18, 18))
+                        .addGap(60, 60, 60))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lbl_result, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(btn_schedule)
-                        .addGap(49, 49, 49)
-                        .addComponent(btn_clear))
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txt_result, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(rdo_annuity)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(rdo_loan))
+                        .addGap(0, 0, 0)))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addComponent(btn_schedule)
+                            .addGap(49, 49, 49)
+                            .addComponent(btn_clear))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_result, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_rate, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_amount, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_term, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(88, Short.MAX_VALUE))
+                            .addComponent(txt_term, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(rdo_annuity)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdo_loan)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdo_presentValue)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +283,8 @@ public class FinancialsPVView extends FrameView {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_financialOperation)
                     .addComponent(rdo_annuity)
-                    .addComponent(rdo_loan))
+                    .addComponent(rdo_loan)
+                    .addComponent(rdo_presentValue))
                 .addGap(31, 31, 31)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_amount)
@@ -375,6 +389,7 @@ public class FinancialsPVView extends FrameView {
         }
     }//GEN-LAST:event_rdo_loanItemStateChanged
 
+    
     private void btn_calculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calculateActionPerformed
         
         NumberFormat currency = NumberFormat.getCurrencyInstance();
@@ -502,6 +517,14 @@ public class FinancialsPVView extends FrameView {
         
     }//GEN-LAST:event_btn_scheduleActionPerformed
 
+    private void rdo_presentValueItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rdo_presentValueItemStateChanged
+                if(rdo_presentValue.isSelected()) {
+            lbl_amount.setText(PresentValue.AMOUNTDESCRIPTION);
+            lbl_result.setText(PresentValue.RESULTDESCRIPTION);
+            financeObject = new PresentValue();
+        }
+    }//GEN-LAST:event_rdo_presentValueItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_calculate;
     private javax.swing.JButton btn_clear;
@@ -517,6 +540,7 @@ public class FinancialsPVView extends FrameView {
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JRadioButton rdo_annuity;
     private javax.swing.JRadioButton rdo_loan;
+    private javax.swing.JRadioButton rdo_presentValue;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
