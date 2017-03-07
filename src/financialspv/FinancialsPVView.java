@@ -426,7 +426,10 @@ public class FinancialsPVView extends FrameView {
             financeObject = new Annuity(amount, rate, term);
         } else if (rdo_loan.isSelected()) {
             financeObject = new Loan(amount, rate, term);
-        } else {
+        } else if (rdo_presentValue.isSelected()) {
+            financeObject = new PresentValue(amount, rate, term);
+        } 
+        else {
             statusMessageLabel.setText("Unknown financial object type.");
             return;
         }
@@ -468,6 +471,8 @@ public class FinancialsPVView extends FrameView {
             columnNames = new String[] {"Month", Loan.BEGINNINGBALANCEDESCRIPTION,  Loan.RESULTDESCRIPTION, Loan.INTERESTFACTORDESCRIPTION, Loan.ENDINGBALANCEDESCRIPTION, Loan.PRINCIPLEPAIDDESCRIPTION };
             // "Initial Loan Balance","Payment","Interest Charged","Ending Loan Balance","Principle Paid"
             //    tableValues = new String[financeObject.getTerm()][6]; 
+        } else if (financeObject instanceof PresentValue) {
+            columnNames = new String[] { PresentValue.PERIOD, PresentValue.PRINCIPALBALANCEDESCRIPTION, PresentValue.ENDINGBALANCEDESCRIPTION };
         } else {
             statusMessageLabel.setText("Unknown financial operation.");
             return;

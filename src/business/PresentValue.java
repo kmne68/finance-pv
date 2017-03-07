@@ -44,7 +44,24 @@ public class PresentValue extends Financial {
     
     
     private void calculatePresentValue() {
-        
+        try {
+            this.monthlyValue = new double[super.getTerm()];
+            this.monthlyDiscount = new double[super.getTerm()];
+            this.endingBalance = new double[super.getTerm()];
+            
+            monthlyValue[0] = 0;
+            for(int month = 0; month < super.getTerm(); month++) {
+                if(month > 0) {
+                    this.monthlyValue[month] = this.endingBalance[month - 1];
+                }
+                this.monthlyDiscount[month] = (this.monthlyValue[month] + super.getAmount() * (super.getRate() / 12.0));
+                this.endingBalance[month] = this.monthlyValue[month] + this.monthlyDiscount[month] + super.getAmount();
+            }
+            this.built = true;
+        } catch (Exception e) {
+            super.setErrorMessage("Present value couldn't be calculated: " + e.getMessage());
+            this.built = false;
+        }
     }
     
     @Override 
