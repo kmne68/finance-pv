@@ -23,9 +23,9 @@ public class PresentValue extends Financial {
     public static final String ENDINGBALANCEDESCRIPTION = "Ending Balance";
     
     private boolean built;
-    private double[] monthlyValue;
-    private double[] monthlyDiscount;
-    private double[] endingBalance;
+    private double[] monthlyValue;              // monthlyPayment
+    private double[] monthlyDiscount;           // interestCharge
+    private double[] endingBalance;             // endingBalance
 
     public PresentValue() {
         super();
@@ -43,19 +43,23 @@ public class PresentValue extends Financial {
     }
     
     
+    // monthlyValue = beginning value, present value
+    // monthlyDiscount = monthly change, interest charge
+    // endingBalance = ending value, final value
+    // PresentValue = AmountInFuture  / ((1 + Rate)^Term)
     private void calculatePresentValue() {
         try {
             this.monthlyValue = new double[super.getTerm()];
             this.monthlyDiscount = new double[super.getTerm()];
             this.endingBalance = new double[super.getTerm()];
             
-            monthlyValue[0] = 0;
+            this.monthlyValue[0] = 0;
             for(int month = 0; month < super.getTerm(); month++) {
                 if(month > 0) {
                     this.monthlyValue[month] = this.endingBalance[month - 1];
                 }
-                this.monthlyDiscount[month] = (this.monthlyValue[month] + super.getAmount() * (super.getRate() / 12.0));
-                this.endingBalance[month] = this.monthlyValue[month] + this.monthlyDiscount[month] + super.getAmount();
+                this.monthlyDiscount[month] = (this.monthlyValue[month] / (Math.pow((1 + (super.getRate() / 12.0)), (double)super.getTerm())));
+                this.endingBalance[month] = this.monthlyValue[month] - this.monthlyDiscount[month] + super.getAmount();
             }
             this.built = true;
         } catch (Exception e) {
@@ -86,7 +90,10 @@ public class PresentValue extends Financial {
 
     @Override
     public double getResult() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!built) {
+            calculatePresentValue();
+        }
+        return this.endingBalance[super.getTerm() - 1];
     }
 
     @Override

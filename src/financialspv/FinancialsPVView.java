@@ -377,7 +377,7 @@ public class FinancialsPVView extends FrameView {
         if(rdo_annuity.isSelected()) {
             lbl_amount.setText(Annuity.AMOUNTDESCRIPTION + ":");
             lbl_result.setText(Annuity.RESULTDESCRIPTION + ":");
-            
+            System.out.println("Radio Annuity");
         }
     }//GEN-LAST:event_rdo_annuityItemStateChanged
 
@@ -391,7 +391,7 @@ public class FinancialsPVView extends FrameView {
 
     
     private void btn_calculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calculateActionPerformed
-        
+        System.out.println("Calculate button pressed.");
         NumberFormat currency = NumberFormat.getCurrencyInstance();
         
         double amount;
@@ -424,12 +424,14 @@ public class FinancialsPVView extends FrameView {
         
         if(rdo_annuity.isSelected()) {            
             financeObject = new Annuity(amount, rate, term);
+            System.out.println("Radio button select--ANNUITY.");
         } else if (rdo_loan.isSelected()) {
             financeObject = new Loan(amount, rate, term);
+            System.out.println("Radio button select--LOAN.");
         } else if (rdo_presentValue.isSelected()) {
-            financeObject = new PresentValue(amount, rate, term);
-        } 
-        else {
+            financeObject = new PresentValue(amount, rate, term); 
+            System.out.println("Radio button select--PRESENT VALUE.");
+        } else {
             statusMessageLabel.setText("Unknown financial object type.");
             return;
         }
@@ -454,6 +456,8 @@ public class FinancialsPVView extends FrameView {
         btn_schedule.setEnabled(false);
         lbl_amount.setText("Amount");
         lbl_result.setText("Result");
+        
+        System.out.println("Clear button pressed.");
     }//GEN-LAST:event_btn_clearActionPerformed
 
     private void btn_scheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_scheduleActionPerformed
@@ -465,14 +469,17 @@ public class FinancialsPVView extends FrameView {
      //       columnNames = new String[] {"Month", "Initial Annuity Value", "Deposit", "Interest Earned", "Ending Annuity Value"};
             columnNames = new String[] {"Month", Annuity.BEGINNINGBALANCEDESCRIPTION, Annuity.PRINCIPLEFACTORDESCRIPTION,
                 Annuity.INTERESTFACTORDESCRIPTION, Annuity.ENDINGBALANCEDESCRIPTION};
+                        System.out.println("Table columns--ANNUITY");
     // "month", Annuity.BegBal, Annuity.Printfacotr, Annuity.intfactodesc, annuity.endbaldesc);
            // tableValues = new String[financeObject.getTerm()][5]; 
         } else if (financeObject instanceof Loan) {
             columnNames = new String[] {"Month", Loan.BEGINNINGBALANCEDESCRIPTION,  Loan.RESULTDESCRIPTION, Loan.INTERESTFACTORDESCRIPTION, Loan.ENDINGBALANCEDESCRIPTION, Loan.PRINCIPLEPAIDDESCRIPTION };
+                        System.out.println("Table columns--LOAN");
             // "Initial Loan Balance","Payment","Interest Charged","Ending Loan Balance","Principle Paid"
             //    tableValues = new String[financeObject.getTerm()][6]; 
         } else if (financeObject instanceof PresentValue) {
             columnNames = new String[] { PresentValue.PERIOD, PresentValue.PRINCIPALBALANCEDESCRIPTION, PresentValue.ENDINGBALANCEDESCRIPTION };
+            System.out.println("Table columns--PRESENT VALUE");
         } else {
             statusMessageLabel.setText("Unknown financial operation.");
             return;
