@@ -49,6 +49,9 @@ public class PresentValue extends Financial {
     // PresentValue = AmountInFuture  / ((1 + Rate)^Term)
     private void calculatePresentValue() {
         try {
+            double monthlyRate = super.getRate() / 12.0;
+            double denom = Math.pow(1 + monthlyRate, super.getTerm() - 1);
+            
             this.monthlyValue = new double[super.getTerm()];
             this.monthlyDiscount = new double[super.getTerm()];
             this.endingBalance = new double[super.getTerm()];
@@ -58,8 +61,9 @@ public class PresentValue extends Financial {
                 if(month > 0) {
                     this.monthlyValue[month] = this.endingBalance[month - 1];
                 }
-                this.monthlyDiscount[month] = (this.monthlyValue[month] / (Math.pow((1 + (super.getRate() / 12.0)), (double)super.getTerm())));
-                this.endingBalance[month] = this.monthlyValue[month] - this.monthlyDiscount[month] + super.getAmount();
+                this.monthlyDiscount[month] = super.getAmount() / (Math.pow(1 + monthlyRate, this.getTerm() - month));
+                // this.endingBalance[month] = this.monthlyValue[month] - this.monthlyDiscount[month] + super.getAmount();
+                this.endingBalance[month] = monthlyDiscount[month]; // - (this.monthlyDiscount[month] *;
             }
             this.built = true;
         } catch (Exception e) {
