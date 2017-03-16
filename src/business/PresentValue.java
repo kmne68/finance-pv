@@ -100,7 +100,13 @@ public class PresentValue extends Financial {
 
     @Override
     public double getEndingBalance(int month) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!built) {
+            calculatePresentValue();
+        }
+        if(month < 1 || month > super.getTerm()) {
+            return 0;
+        }
+        return this.endingBalance[month - 1];
     }
 
     @Override
