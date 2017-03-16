@@ -509,9 +509,15 @@ public class FinancialsPVView extends FrameView {
 
             if(financeObject instanceof Loan) {
                 Loan loan = (Loan) financeObject;
-                tbl_schedule.setValueAt(currency.format(loan.getPrinciplePaid(year)), year - 1, 5);
-                
+                tbl_schedule.setValueAt(currency.format(loan.getPrinciplePaid(year)), year - 1, 5);                
             }
+            
+            if(financeObject instanceof PresentValue) {
+                tbl_schedule.setValueAt(year, year - 1, 0);
+                tbl_schedule.setValueAt(currency.format(financeObject.getPrincipleFactor(year)), year - 1, 1);
+                tbl_schedule.setValueAt(currency.format(financeObject.getEndingBalance(year), year - 1, 2));
+            }
+            
         }
         
         

@@ -48,18 +48,18 @@ public class PresentValue extends Financial {
     // endingBalance = ending value, final value
     // PresentValue = AmountInFuture  / ((1 + Rate)^Term)
     private void calculatePresentValue() {
-   //     try {
+        try {
             double monthlyRate = super.getRate() / 12.0;
             System.out.println("monthly rate = " + monthlyRate);
             
-            this.monthlyValue = new double[super.getTerm()];
+            this.monthlyValue = new double[super.getTerm()]; // 0 - 23
             this.monthlyDiscount = new double[super.getTerm()];
             this.endingBalance = new double[super.getTerm()];
                         
             System.out.println("term = " + super.getTerm());
             //this.monthlyValue[0] = 0;
-      //      for(int month = super.getTerm(); month >= 0; month--) {
-                int month = 23;
+            for(int month = super.getTerm() - 1; month >= 0; month--) {
+      //          int month = 23;
             double denom = Math.pow(1 + monthlyRate, super.getTerm());
       /*      if (month == super.getTerm()) {
                     this.endingBalance[month] = super.getAmount();
@@ -72,17 +72,20 @@ public class PresentValue extends Financial {
             System.out.println("value, discount, balance " + this.monthlyValue + ", " + this.monthlyDiscount + ", " + this.endingBalance);
                 //this.monthlyValue[month] - this.monthlyDiscount[month] + super.getAmount();
              //   this.endingBalance[month] = monthlyDiscount[month]; // - (this.monthlyDiscount[month] *;
-  //          }
+            }
             this.built = true;
-   /*     } catch (Exception e) {
+        } catch (Exception e) {
             super.setErrorMessage("Present value couldn't be calculated: " + e.getMessage());
             this.built = false;
-        } */
+        } 
     }
     
     @Override 
     public double getPrincipleFactor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!built) {
+            calculatePresentValue();
+        }
+        return super.getAmount();
     }
 
     @Override
