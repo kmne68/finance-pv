@@ -23,7 +23,7 @@ public class PresentValue extends Financial {
     public static final String ENDINGBALANCEDESCRIPTION = "Ending Balance";
     
     private boolean built;
-    private double[] monthlyValue;              // monthlyPayment
+    private double[] monthlyValue;              // monthlyValue
     private double[] monthlyDiscount;           // interestCharge
     private double[] endingBalance;             // endingBalance
 
@@ -90,12 +90,18 @@ public class PresentValue extends Financial {
 
     @Override
     public double getBeginningBalance(int month) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!built) {
+            calculatePresentValue();
+        }
+        if(month < 1 || month > super.getTerm()) {
+            return 0;
+        }
+        return this.monthlyValue[month - 1];
     }
 
     @Override
     public double getInterestFactor(int month) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.monthlyDiscount[month];
     }
 
     @Override
@@ -124,22 +130,22 @@ public class PresentValue extends Financial {
 
     @Override
     public String getPrincipleFactorDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return PresentValue.PRINCIPALBALANCEDESCRIPTION;
     }
 
     @Override
     public String getInterestFactorDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public String getEndingBalanceDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return PresentValue.ENDINGBALANCEDESCRIPTION;
     }
 
     @Override
     public String getTableTitle() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return PresentValue.TITLE;
     }
             
         
