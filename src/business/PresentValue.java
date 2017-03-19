@@ -58,13 +58,14 @@ public class PresentValue extends Financial {
                         
             System.out.println("term = " + super.getTerm());
             //this.monthlyValue[0] = 0;
-            for(int month = super.getTerm() - 1; month >= 0; month--) {
+       //     for(int month = super.getTerm() - 1; month >= 0; month--) {
+            for(int month = 0;  month <= super.getTerm(); month++) {
       //          int month = 23;
             double denom = Math.pow(1 + monthlyRate, super.getTerm());
       /*      if (month == super.getTerm()) {
                     this.endingBalance[month] = super.getAmount();
                 } */
-                this.monthlyValue[month] = this.getAmount() / denom;
+                this.monthlyValue[month] = this.endingBalance[month] / denom;
                 
                 this.monthlyDiscount[month] = super.getAmount() - this.monthlyValue[month];
                 this.endingBalance[month] = this.monthlyValue[month];
@@ -101,7 +102,7 @@ public class PresentValue extends Financial {
 
     @Override
     public double getInterestFactor(int month) {
-        return this.monthlyDiscount[month];
+        return this.monthlyDiscount[month - 1];
     }
 
     @Override
@@ -146,8 +147,6 @@ public class PresentValue extends Financial {
     @Override
     public String getTableTitle() {
         return PresentValue.TITLE;
-    }
-            
-        
+    }      
     
 }
