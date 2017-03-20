@@ -58,14 +58,13 @@ public class PresentValue extends Financial {
                         
             System.out.println("term = " + super.getTerm());
             //this.monthlyValue[0] = 0;
-       //     for(int month = super.getTerm() - 1; month >= 0; month--) {
-            for(int month = 0;  month <= super.getTerm(); month++) {
-      //          int month = 23;
-            double denom = Math.pow(1 + monthlyRate, super.getTerm());
+      //      for(int month = super.getTerm() - 1; month >= 0; month--) {
+            for (int month = 0; month <= super.getTerm(); month++) {
+                double denom = Math.pow(1 + monthlyRate, super.getTerm() - month);
       /*      if (month == super.getTerm()) {
                     this.endingBalance[month] = super.getAmount();
                 } */
-                this.monthlyValue[month] = this.endingBalance[month] / denom;
+                this.monthlyValue[month] = this.getAmount() / denom;
                 
                 this.monthlyDiscount[month] = super.getAmount() - this.monthlyValue[month];
                 this.endingBalance[month] = this.monthlyValue[month];
