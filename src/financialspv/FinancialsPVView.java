@@ -513,9 +513,14 @@ public class FinancialsPVView extends FrameView {
             }
             
             if(financeObject instanceof PresentValue) {
-                tbl_schedule.setValueAt(year, year - 1, 0);
-                tbl_schedule.setValueAt(currency.format(financeObject.getInterestFactor(year)), year - 1, 1);
-                tbl_schedule.setValueAt(currency.format(financeObject.getEndingBalance(year)), year - 1, 2);
+                
+                for(int month = 1; month <= financeObject.getTerm(); month++) {
+                PresentValue presentValue = (PresentValue) financeObject;
+                tbl_schedule.setValueAt(month - 1, month - 1, 0);
+                System.out.println("row = " + month);
+                tbl_schedule.setValueAt(currency.format(presentValue.getInterestFactor(month - 1)), month - 1, 1);
+                tbl_schedule.setValueAt(currency.format(presentValue.getEndingBalance(month - 1)), month - 1, 2);
+                }
             }
             
         }
