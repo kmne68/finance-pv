@@ -488,7 +488,11 @@ public class FinancialsPVView extends FrameView {
         statusMessageLabel.setText("");
         NumberFormat currency = NumberFormat.getCurrencyInstance();
    //     tbl_schedule.setName(null);
+   if(financeObject instanceof PresentValue) {
+       tableValues = new String[financeObject.getTerm() + 1][columnNames.length];
+   } else {
         tableValues = new String[financeObject.getTerm()][columnNames.length];
+   }
         
         DefaultTableModel model;         
         model = new DefaultTableModel(tableValues, columnNames);
@@ -514,12 +518,12 @@ public class FinancialsPVView extends FrameView {
             
             if(financeObject instanceof PresentValue) {
                 
-                for(int month = 1; month <= financeObject.getTerm(); month++) {
+                for(int month = 0; month <= financeObject.getTerm(); month++) {
                 PresentValue presentValue = (PresentValue) financeObject;
-                tbl_schedule.setValueAt(month - 1, month - 1, 0);
+                tbl_schedule.setValueAt(month , month , 0);
                 System.out.println("row = " + month);
-                tbl_schedule.setValueAt(currency.format(presentValue.getInterestFactor(month - 1)), month - 1, 1);
-                tbl_schedule.setValueAt(currency.format(presentValue.getEndingBalance(month - 1)), month - 1, 2);
+                tbl_schedule.setValueAt(currency.format(presentValue.getInterestFactor(month )), month , 1);
+                tbl_schedule.setValueAt(currency.format(presentValue.getEndingBalance(month )), month , 2);
                 }
             }
             
