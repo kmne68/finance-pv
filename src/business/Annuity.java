@@ -19,11 +19,7 @@ public class Annuity extends Financial {
     public static final String INTERESTFACTORDESCRIPTION =  "Interest Earned:";
     public static final String ENDINGBALANCEDESCRIPTION = "Ending Annuity Value:";
 
-    /*    private double deposit;
-    private double rate;
-    private int term;       */
     private boolean built;  //whether fv has been built
-    //private double fv;     //final value of annuity
     private double[] beginningBalance;
     private double[] interestEarned;
     private double[] endingBalance;
@@ -37,7 +33,6 @@ public class Annuity extends Financial {
 
         this.built = false;
         if (super.isValid()) {
-            //this.fv = 0;
             calculateAnnuity();
         }
     }
@@ -89,9 +84,7 @@ public class Annuity extends Financial {
     }
 
     private void calculateAnnuity() {
-        //internal logic for building an annuity...
-        //this.fv = 0;
-        //double intearned=0;
+
         try {
             this.beginningBalance = new double[super.getTerm()];
             this.interestEarned = new double[super.getTerm()];

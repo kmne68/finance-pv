@@ -37,43 +37,29 @@ public class PresentValue extends Financial {
         
         this.built = false;
         if(super.isValid()) {
-            
             calculatePresentValue();
         }
     }
     
-    
-    // monthlyValue = beginning value, present value
-    // monthlyDiscount = monthly change, interest charge
-    // endingBalance = ending value, final value
-    // PresentValue = AmountInFuture  / ((1 + Rate)^Term)
+
     private void calculatePresentValue() {
-        try {
-            double monthlyRate = super.getRate() / 12.0;
-            System.out.println("monthly rate = " + monthlyRate);
-            
-            this.monthlyValue = new double[super.getTerm() + 1]; // term = 24 (0 - 23) + 1 so 0 - 24
-            this.monthlyDiscount = new double[super.getTerm() + 1];
-            this.endingBalance = new double[super.getTerm() + 1];
+        double monthlyRate = super.getRate() / 12.0;
+        try {            
+            monthlyValue = new double[super.getTerm() + 1]; 
+            monthlyDiscount = new double[super.getTerm() + 1];
+            endingBalance = new double[super.getTerm() + 1];
                         
-            System.out.println("term = " + super.getTerm());
-            //this.monthlyValue[0] = 0;
-      //      for(int month = super.getTerm() - 1; month >= 0; month--) {
             for (int month = 0; month <= (super.getTerm() + 1); month++) {
-                double denom = Math.pow(1 + monthlyRate, super.getTerm() - month);
-      /*      if (month == super.getTerm()) {
-                    this.endingBalance[month] = super.getAmount();
-                } */
+    //        for(int month = 0; month < 24; month++) {
+                double denom = Math.pow(1 + monthlyRate, this.getTerm() - month);
+                System.out.println("denom = " + denom);
                 this.monthlyValue[month] = super.getAmount() / denom;                
                 this.monthlyDiscount[month] = super.getAmount() - this.monthlyValue[month];
                 this.endingBalance[month] = this.monthlyValue[month];
-
-            System.out.println("value, discount, balance, month " + this.monthlyValue[month] + ", " + this.monthlyDiscount[month] + ", " + this.endingBalance[month] + " " + month);
-                //this.monthlyValue[month] - this.monthlyDiscount[month] + super.getAmount();
-             //   this.endingBalance[month] = monthlyDiscount[month]; // - (this.monthlyDiscount[month] *;
             }
             this.built = true;
         } catch (Exception e) {
+            System.out.println("from catch block");
             super.setErrorMessage("Present value couldn't be calculated: " + e.getMessage());
             this.built = false;
         } 
@@ -100,7 +86,6 @@ public class PresentValue extends Financial {
 
     @Override
     public double getInterestFactor(int month) {
-        System.out.println("Monthly discount for month " + month + " is " + this.monthlyDiscount[month]);
         return this.monthlyDiscount[month];
     }
 
@@ -110,7 +95,6 @@ public class PresentValue extends Financial {
             calculatePresentValue();
         }
         if(month < 0 || month > super.getTerm() + 1) {
-            System.out.println("month = " + month + ", and present value = " + monthlyValue[month]);
             return 0;
         }
         return this.endingBalance[month];
@@ -121,7 +105,7 @@ public class PresentValue extends Financial {
         if(!built) {
             calculatePresentValue();
         }
-        return this.endingBalance[0]; // was super.getTerm();
+        return this.endingBalance[0];
     }
 
     @Override
