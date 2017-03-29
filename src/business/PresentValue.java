@@ -48,9 +48,8 @@ public class PresentValue extends Financial {
             monthlyValue = new double[super.getTerm() + 1]; 
             monthlyDiscount = new double[super.getTerm() + 1];
             endingBalance = new double[super.getTerm() + 1];
-                        
-            for (int month = 0; month <= (super.getTerm() + 1); month++) {
-    //        for(int month = 0; month < 24; month++) {
+
+            for(int month = 0; month < super.getTerm() + 1; month++) {
                 double denom = Math.pow(1 + monthlyRate, this.getTerm() - month);
                 System.out.println("denom = " + denom);
                 this.monthlyValue[month] = super.getAmount() / denom;                
